@@ -27,6 +27,8 @@ void openLib(lua_State* L) {
     lua_setglobal(L, "ClearWindow");
     lua_pushcfunction(L, draw_circle);
     lua_setglobal(L, "DrawCircle");
+    lua_pushcfunction(L, draw_rectangle);
+    lua_setglobal(L, "DrawRectangle");
 
     lua_pushcfunction(L, input_isKeyDown);
     lua_setglobal(L, "IsKeyDown");
@@ -97,6 +99,15 @@ int draw_circle(lua_State* L) {
 
     return 0;
 
+}
+
+int draw_rectangle(lua_State* L) {
+    int posX = (int) lua_tointeger(L, 1);
+    int posY = (int) lua_tointeger(L, 2);
+    int width = (int) lua_tointeger(L, 3);
+    int height = (int) lua_tointeger(L, 4);
+    DrawRectangle(posX, posY, width, height, drawColor);
+    return 0;
 }
 
 
