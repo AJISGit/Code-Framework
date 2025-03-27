@@ -1,10 +1,13 @@
 #include<stdio.h>
+#include<time.h>
 
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
 
 #include "funcs.h"
+
+#define GET_CURRENT_TIME (int) clock()
 
 // -O1 -std=c++17 -Wno-missing-braces -I ./include/ -L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
 // lzio.c lvm.c lutf8lib.c lundump.c lua.c ltm.c ltablib.c ltable.c lstrlib.c lstring.c lstate.c lparser.c loslib.c lopcodes.c lobject.c loadlib.c lmem.c lmathlib.c llex.c liolib.c linit.c lgc.c lfunc.c ldump.c ldo.c ldebug.c ldblib.c lctype.c lcorolib.c lcode.c lbaselib.c lauxlib.c lapi.c
@@ -33,11 +36,15 @@ int main(int argc, char* argv[]) {
 
     if (isUpdate) {
         SetTargetFPS(30);
+        int startTime = GET_CURRENT_TIME;
         while (!WindowShouldClose()) {
 
             lua_getglobal(L, "onUpdate");
+            
+            lua_pushnumber(L, (lua_Number) (clock() - startTime));
+            startTime = GET_CURRENT_TIME;
 
-            int updateError = lua_pcall(L, 0, 0, 0);
+            int updateError = lua_pcall(L, 1, 0, 0);
 
             if (updateError) {
                 fprintf(stderr, "%s\n", lua_tostring(L, -1));
