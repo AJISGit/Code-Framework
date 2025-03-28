@@ -15,7 +15,7 @@
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
-        printf("\nRaylua: version is like alpha 0.001\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C.\n");
+        printf("\nCodeFramework: version is like alpha 0.001\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         fprintf(stderr, "You must have forgotten to enter a file, please do that\n\n");
         return 0;
