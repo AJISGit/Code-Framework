@@ -91,22 +91,22 @@ int draw_clearWindow(lua_State* L) {
 }
 
 int draw_circle(lua_State* L) {
-    int posX = (int) lua_tointeger(L, 1);
-    int posY = (int) lua_tointeger(L, 2);
+    int posX = (float) lua_tonumber(L, 1);
+    int posY = (float) lua_tonumber(L, 2);
     float radius = (float) lua_tonumber(L, 3);
 
-    DrawCircle(posX, posY, radius, drawColor);
+    DrawCircleV((Vector2){posX, posY}, radius, drawColor);
 
     return 0;
 
 }
 
 int draw_rectangle(lua_State* L) {
-    int posX = (int) lua_tointeger(L, 1);
-    int posY = (int) lua_tointeger(L, 2);
-    int width = (int) lua_tointeger(L, 3);
-    int height = (int) lua_tointeger(L, 4);
-    DrawRectangle(posX, posY, width, height, drawColor);
+    int posX = (float) lua_tonumber(L, 1);
+    int posY = (float) lua_tonumber(L, 2);
+    int width = (float) lua_tonumber(L, 3);
+    int height = (float) lua_tonumber(L, 4);
+    DrawRectangleV((Vector2){posX, posY}, (Vector2){width, height}, drawColor);
     return 0;
 }
 
