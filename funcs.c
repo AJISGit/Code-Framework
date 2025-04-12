@@ -29,9 +29,14 @@ void openLib(lua_State* L) {
     lua_setglobal(L, "DrawCircle");
     lua_pushcfunction(L, draw_rectangle);
     lua_setglobal(L, "DrawRectangle");
+    lua_pushcfunction(L, draw_sprite);
+    lua_setglobal(L, "DrawSprite");
 
     lua_pushcfunction(L, input_isKeyDown);
     lua_setglobal(L, "IsKeyDown");
+
+    lua_pushcfunction(L, load_sprite);
+    lua_setglobal(L, "LoadSprite");
 }
 
 int window_Init(lua_State* L) {
@@ -110,6 +115,16 @@ int draw_rectangle(lua_State* L) {
     return 0;
 }
 
+int draw_sprite(lua_State* L) {
+    
+    Texture2D* sprite = (Texture2D*) lua_touserdata(L, 1);
+    int posX = (float) lua_tonumber(L, 2);
+    int posY = (float) lua_tonumber(L, 3);
+
+    DrawTextureV(*sprite, (Vector2){posX, posY}, drawColor);
+
+}
+
 
 
 int input_isKeyDown(lua_State* L) {
@@ -145,4 +160,19 @@ int input_isKeyDown(lua_State* L) {
     }
 
     return 1;
+}
+
+int load_sprite(lua_State* L) {
+
+    const char* filename = lua_tostring(L, 1);
+    Texture2D newTexture = LoadTexture(filename);
+    Texture2D* pTexture = (Texture2D*) lua_newuserdata(L, sizeof(newTexture));
+    pTexture->format = newTexture.format;
+    pTexture->height = newTexture.height;
+    pTexture->id = newTexture.id;
+    pTexture->mipmaps = newTexture.mipmaps;
+    pTexture->width = newTexture.width;
+
+    return 1;
+
 }

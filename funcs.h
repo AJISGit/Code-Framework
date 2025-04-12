@@ -18,5 +18,8 @@ int draw_setBGColor(lua_State* L);
 int draw_clearWindow(lua_State* L);
 int draw_circle(lua_State* L);
 int draw_rectangle(lua_State* L);
+int draw_sprite(lua_State* L);
 
 int input_isKeyDown(lua_State* L);
+
+int load_sprite(lua_State* L);
