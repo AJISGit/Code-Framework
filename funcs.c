@@ -31,12 +31,20 @@ void openLib(lua_State* L) {
     lua_setglobal(L, "DrawRectangle");
     lua_pushcfunction(L, draw_sprite);
     lua_setglobal(L, "DrawSprite");
+    lua_pushcfunction(L, draw_text);
+    lua_setglobal(L, "DrawText");
 
     lua_pushcfunction(L, input_isKeyDown);
     lua_setglobal(L, "IsKeyDown");
 
     lua_pushcfunction(L, load_sprite);
     lua_setglobal(L, "LoadSprite");
+    lua_pushcfunction(L, load_sound);
+    lua_setglobal(L, "LoadSound");
+
+    lua_pushcfunction(L, sound_play);
+    lua_setglobal(L, "PlaySound");
+
 }
 
 int window_Init(lua_State* L) {
@@ -50,6 +58,7 @@ int window_Init(lua_State* L) {
     //printf("width: %d\nheight: %d\nname: %s\n", width, height, title);
 
     InitWindow(width, height, title);
+    InitAudioDevice();
 
     return 0;
 
@@ -96,8 +105,8 @@ int draw_clearWindow(lua_State* L) {
 }
 
 int draw_circle(lua_State* L) {
-    int posX = (float) lua_tonumber(L, 1);
-    int posY = (float) lua_tonumber(L, 2);
+    float posX = (float) lua_tonumber(L, 1);
+    float posY = (float) lua_tonumber(L, 2);
     float radius = (float) lua_tonumber(L, 3);
 
     DrawCircleV((Vector2){posX, posY}, radius, drawColor);
@@ -107,10 +116,10 @@ int draw_circle(lua_State* L) {
 }
 
 int draw_rectangle(lua_State* L) {
-    int posX = (float) lua_tonumber(L, 1);
-    int posY = (float) lua_tonumber(L, 2);
-    int width = (float) lua_tonumber(L, 3);
-    int height = (float) lua_tonumber(L, 4);
+    float posX = (float) lua_tonumber(L, 1);
+    float posY = (float) lua_tonumber(L, 2);
+    float width = (float) lua_tonumber(L, 3);
+    float height = (float) lua_tonumber(L, 4);
     DrawRectangleV((Vector2){posX, posY}, (Vector2){width, height}, drawColor);
     return 0;
 }
@@ -118,13 +127,24 @@ int draw_rectangle(lua_State* L) {
 int draw_sprite(lua_State* L) {
     
     Texture2D* sprite = (Texture2D*) lua_touserdata(L, 1);
-    int posX = (float) lua_tonumber(L, 2);
-    int posY = (float) lua_tonumber(L, 3);
+    float posX = (float) lua_tonumber(L, 2);
+    float posY = (float) lua_tonumber(L, 3);
 
     DrawTextureV(*sprite, (Vector2){posX, posY}, drawColor);
 
 }
 
+int draw_text(lua_State* L) {
+    const char* text = lua_tostring(L, 1);
+    int posX = (int) lua_tointeger(L, 2);
+    int posY = (int) lua_tointeger(L, 3);
+    int size = (int) lua_tointeger(L, 4);
+
+    DrawText(text, posX, posY, size, drawColor);
+
+    return 0;
+
+}
 
 
 int input_isKeyDown(lua_State* L) {
@@ -174,5 +194,28 @@ int load_sprite(lua_State* L) {
     pTexture->width = newTexture.width;
 
     return 1;
+
+}
+
+int load_sound(lua_State* L) {
+
+    const char* filename = lua_tostring(L, 1);
+
+    Sound newSound = LoadSound(filename);
+    Sound* pSound = (Sound*) lua_newuserdata(L, sizeof(newSound));
+
+    pSound->frameCount = newSound.frameCount;
+    pSound->stream = newSound.stream;
+
+    return 1;
+
+}
+
+
+int sound_play(lua_State* L) {
+
+    Sound* sound = (Sound*) lua_touserdata(L, 1);
+    PlaySound(*sound);
+    return 0;
 
 }
