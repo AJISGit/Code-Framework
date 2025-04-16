@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 #include<time.h>
 
 #include "lua.h"
@@ -15,9 +16,25 @@
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
-        printf("\nCodeFramework: version is like alpha 0.001\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
+        printf("\nCodeFramework: version is like beta 1.0\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         fprintf(stderr, "You must have forgotten to enter a file, please do that\n\n");
+        return 0;
+    }
+
+    if (strcmp(argv[1], "--info") == 0) {
+        const char* infoText = "\n\
+        Codeframework:\n\
+        The new Lua framework in town.\n\
+        You may know of it as, \"That framework that only supports four keys\",\n\
+        Or, \"That framework that doesn't test the metatables of userdata.\"\n\
+        \n\
+        We, and by we I mean I, don't care about these major flaws. I think of them as features. \n\
+        \n\
+        You want documentation? That's too bad! Writing documentation for a product only I will use sounds boring.\n\
+        \n\
+        ";
+        printf("%s\n", infoText);
         return 0;
     }
 
