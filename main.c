@@ -16,9 +16,10 @@
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
-        printf("\nCodeFramework: version is like beta 1.0\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
+        printf("\nCodeFramework: version beta 1.1, \"The Shader Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
-        fprintf(stderr, "You must have forgotten to enter a file, please do that\n\n");
+        printf("You must have forgotten to enter a file, please do that\n");
+        printf("\nOr you could type \"codeframework --info\" for more info\n\n");
         return 0;
     }
 
@@ -40,7 +41,7 @@ int main(int argc, char* argv[]) {
 
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
-    openLib(L);
+    cdf_openLib(L);
     
     int error = luaL_dofile(L, argv[1]);
     if (error) {
@@ -72,12 +73,22 @@ int main(int argc, char* argv[]) {
             lua_getglobal(L, "onDraw");
 
             BeginDrawing();
+
+            if (cdf_internal_isShaderLoaded()) {
+                BeginShaderMode(*(cdf_internal_getCurrentShader()));
+            }
+
             int drawError = lua_pcall(L, 0, 0, 0);
             if (drawError) {
                 fprintf(stderr, "%s\n", lua_tostring(L, -1));
                 lua_pop(L, -1);
                 return 1;
             }
+
+            if (cdf_internal_isShaderLoaded()) {
+                EndShaderMode();
+            }
+
             EndDrawing();
 
             lua_settop(L, 0);

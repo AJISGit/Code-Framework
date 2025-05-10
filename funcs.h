@@ -6,24 +6,34 @@
 
 #include<raylib.h>
 
-void openLib(lua_State* L);
+// internal functions
 
-int window_Init(lua_State* L);
-int window_Close(lua_State* L);
-int window_SetFps(lua_State* L);
-int window_Wait(lua_State* L);
+bool cdf_internal_isShaderLoaded();
+Shader* cdf_internal_getCurrentShader();
 
-int draw_setColor(lua_State* L);
-int draw_setBGColor(lua_State* L);
-int draw_clearWindow(lua_State* L);
-int draw_circle(lua_State* L);
-int draw_rectangle(lua_State* L);
-int draw_sprite(lua_State* L);
-int draw_text(lua_State* L);
+// lua functions
 
-int input_isKeyDown(lua_State* L);
+void cdf_openLib(lua_State* L);
 
-int load_sprite(lua_State* L);
-int load_sound(lua_State* L);
+int cdf_window_Init(lua_State* L);
+int cdf_window_Close(lua_State* L);
+int cdf_window_SetFps(lua_State* L);
+int cdf_window_Wait(lua_State* L);
 
-int sound_play(lua_State* L);
+int cdf_draw_setColor(lua_State* L);
+int cdf_draw_setBGColor(lua_State* L);
+int cdf_draw_clearWindow(lua_State* L);
+int cdf_draw_circle(lua_State* L);
+int cdf_draw_rectangle(lua_State* L);
+int cdf_draw_sprite(lua_State* L);
+int cdf_draw_text(lua_State* L);
+
+int cdf_input_isKeyDown(lua_State* L);
+
+int cdf_load_sprite(lua_State* L);
+int cdf_load_sound(lua_State* L);
+
+int cdf_sound_play(lua_State* L);
+
+int cdf_shader_load(lua_State* L);
+int cdf_shader_set(lua_State* L);

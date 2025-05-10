@@ -8,46 +8,67 @@
 
 Color drawColor = WHITE;
 Color backgroundColor = BLACK;
+bool isShaderLoaded = false;
+Shader* currentShader;
 
-void openLib(lua_State* L) {
-    lua_pushcfunction(L, window_Init);
-    lua_setglobal(L, "Init");
-    lua_pushcfunction(L, window_SetFps);
-    lua_setglobal(L, "SetMaxFps");
-    lua_pushcfunction(L, window_Close);
-    lua_setglobal(L, "Close");
-    lua_pushcfunction(L, window_Wait);
-    lua_setglobal(L, "Wait");
+// internal functions
 
-    lua_pushcfunction(L, draw_setColor);
-    lua_setglobal(L, "SetDrawColor");
-    lua_pushcfunction(L, draw_setBGColor);
-    lua_setglobal(L, "SetBackgroundColor");
-    lua_pushcfunction(L, draw_clearWindow);
-    lua_setglobal(L, "ClearWindow");
-    lua_pushcfunction(L, draw_circle);
-    lua_setglobal(L, "DrawCircle");
-    lua_pushcfunction(L, draw_rectangle);
-    lua_setglobal(L, "DrawRectangle");
-    lua_pushcfunction(L, draw_sprite);
-    lua_setglobal(L, "DrawSprite");
-    lua_pushcfunction(L, draw_text);
-    lua_setglobal(L, "DrawText");
+bool cdf_internal_isShaderLoaded() {
 
-    lua_pushcfunction(L, input_isKeyDown);
-    lua_setglobal(L, "IsKeyDown");
-
-    lua_pushcfunction(L, load_sprite);
-    lua_setglobal(L, "LoadSprite");
-    lua_pushcfunction(L, load_sound);
-    lua_setglobal(L, "LoadSound");
-
-    lua_pushcfunction(L, sound_play);
-    lua_setglobal(L, "PlaySound");
+    return isShaderLoaded;
 
 }
 
-int window_Init(lua_State* L) {
+Shader* cdf_internal_getCurrentShader() {
+    return currentShader;
+}
+
+// lua functions
+
+void cdf_openLib(lua_State* L) {
+    lua_pushcfunction(L, cdf_window_Init);
+    lua_setglobal(L, "Init");
+    lua_pushcfunction(L, cdf_window_SetFps);
+    lua_setglobal(L, "SetMaxFps");
+    lua_pushcfunction(L, cdf_window_Close);
+    lua_setglobal(L, "Close");
+    lua_pushcfunction(L, cdf_window_Wait);
+    lua_setglobal(L, "Wait");
+
+    lua_pushcfunction(L, cdf_draw_setColor);
+    lua_setglobal(L, "SetDrawColor");
+    lua_pushcfunction(L, cdf_draw_setBGColor);
+    lua_setglobal(L, "SetBackgroundColor");
+    lua_pushcfunction(L, cdf_draw_clearWindow);
+    lua_setglobal(L, "ClearWindow");
+    lua_pushcfunction(L, cdf_draw_circle);
+    lua_setglobal(L, "DrawCircle");
+    lua_pushcfunction(L, cdf_draw_rectangle);
+    lua_setglobal(L, "DrawRectangle");
+    lua_pushcfunction(L, cdf_draw_sprite);
+    lua_setglobal(L, "DrawSprite");
+    lua_pushcfunction(L, cdf_draw_text);
+    lua_setglobal(L, "DrawText");
+
+    lua_pushcfunction(L, cdf_input_isKeyDown);
+    lua_setglobal(L, "IsKeyDown");
+
+    lua_pushcfunction(L, cdf_load_sprite);
+    lua_setglobal(L, "LoadSprite");
+    lua_pushcfunction(L, cdf_load_sound);
+    lua_setglobal(L, "LoadSound");
+
+    lua_pushcfunction(L, cdf_sound_play);
+    lua_setglobal(L, "PlaySound");
+
+    lua_pushcfunction(L, cdf_shader_load);
+    lua_setglobal(L, "LoadShader");
+    lua_pushcfunction(L, cdf_shader_set);
+    lua_setglobal(L, "SetShader");
+
+}
+
+int cdf_window_Init(lua_State* L) {
     SetTraceLogLevel(LOG_ERROR);
     //printf("working\n");
     
@@ -64,25 +85,25 @@ int window_Init(lua_State* L) {
 
 }
 
-int window_SetFps(lua_State* L) {
+int cdf_window_SetFps(lua_State* L) {
     int fps = (int) lua_tointeger(L, -1);
     SetTargetFPS(fps);
     return 0;
 }
 
-int window_Close(lua_State* L) {
+int cdf_window_Close(lua_State* L) {
     CloseWindow();
     return 0;
 }
 
-int window_Wait(lua_State* L) {
+int cdf_window_Wait(lua_State* L) {
     WaitTime(lua_tonumber(L, 1));
     return 0;
 }
 
 
 
-int draw_setColor(lua_State* L) {
+int cdf_draw_setColor(lua_State* L) {
     int red = (int) lua_tointeger(L, 1);
     int green = (int) lua_tointeger(L, 2);
     int blue = (int) lua_tointeger(L, 3);
@@ -93,18 +114,18 @@ int draw_setColor(lua_State* L) {
     return 0;
 }
 
-int draw_setBGColor(lua_State* L) {
+int cdf_draw_setBGColor(lua_State* L) {
     int red = (int) lua_tointeger(L, 1);
     int green = (int) lua_tointeger(L, 2);
     int blue = (int) lua_tointeger(L, 3);
     backgroundColor = (Color){red, green, blue, 255};
 }
 
-int draw_clearWindow(lua_State* L) {
+int cdf_draw_clearWindow(lua_State* L) {
     ClearBackground(backgroundColor);
 }
 
-int draw_circle(lua_State* L) {
+int cdf_draw_circle(lua_State* L) {
     float posX = (float) lua_tonumber(L, 1);
     float posY = (float) lua_tonumber(L, 2);
     float radius = (float) lua_tonumber(L, 3);
@@ -115,7 +136,7 @@ int draw_circle(lua_State* L) {
 
 }
 
-int draw_rectangle(lua_State* L) {
+int cdf_draw_rectangle(lua_State* L) {
     float posX = (float) lua_tonumber(L, 1);
     float posY = (float) lua_tonumber(L, 2);
     float width = (float) lua_tonumber(L, 3);
@@ -124,7 +145,7 @@ int draw_rectangle(lua_State* L) {
     return 0;
 }
 
-int draw_sprite(lua_State* L) {
+int cdf_draw_sprite(lua_State* L) {
     
     Texture2D* sprite = (Texture2D*) lua_touserdata(L, 1);
     float posX = (float) lua_tonumber(L, 2);
@@ -134,7 +155,7 @@ int draw_sprite(lua_State* L) {
 
 }
 
-int draw_text(lua_State* L) {
+int cdf_draw_text(lua_State* L) {
     const char* text = lua_tostring(L, 1);
     int posX = (int) lua_tointeger(L, 2);
     int posY = (int) lua_tointeger(L, 3);
@@ -147,7 +168,7 @@ int draw_text(lua_State* L) {
 }
 
 
-int input_isKeyDown(lua_State* L) {
+int cdf_input_isKeyDown(lua_State* L) {
     const char *key = luaL_checkstring(L, 1);
     
     if (key[0] == 'w') {
@@ -182,7 +203,7 @@ int input_isKeyDown(lua_State* L) {
     return 1;
 }
 
-int load_sprite(lua_State* L) {
+int cdf_load_sprite(lua_State* L) {
 
     const char* filename = lua_tostring(L, 1);
     Texture2D newTexture = LoadTexture(filename);
@@ -197,7 +218,7 @@ int load_sprite(lua_State* L) {
 
 }
 
-int load_sound(lua_State* L) {
+int cdf_load_sound(lua_State* L) {
 
     const char* filename = lua_tostring(L, 1);
 
@@ -212,10 +233,35 @@ int load_sound(lua_State* L) {
 }
 
 
-int sound_play(lua_State* L) {
+int cdf_sound_play(lua_State* L) {
 
     Sound* sound = (Sound*) lua_touserdata(L, 1);
     PlaySound(*sound);
+    return 0;
+
+}
+
+
+int cdf_shader_load(lua_State* L) {
+
+    const char* ffilename = lua_tostring(L, 1);
+    const char* vfilename = lua_tostring(L, 2);
+
+    Shader newShader = LoadShader(vfilename, ffilename);
+    Shader* pShader = (Shader*) lua_newuserdata(L, sizeof(newShader));
+
+    pShader->id = newShader.id;
+    pShader->locs = newShader.locs;
+
+    return 1;
+
+}
+
+int cdf_shader_set(lua_State* L) {
+
+    Shader* shader = (Shader*) lua_touserdata(L, 1);
+    currentShader = shader;
+    isShaderLoaded = true;
     return 0;
 
 }
