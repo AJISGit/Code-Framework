@@ -1,4 +1,4 @@
-## Code Framework
+# Code Framework
 
 Code Framework is a simple Lua framework I'm making just for fun
 
