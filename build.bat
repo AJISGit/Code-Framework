@@ -1,1 +1,1 @@
-gcc lua.dll funcs.c main.c -o codeframework.exe -Wno-missing-braces -I ./include/ -L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+gcc lua.dll funcs.c main.c -o codeframework.exe -Wno-missing-braces -static -I ./include/ -L ./lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
