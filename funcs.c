@@ -1,3 +1,10 @@
+/*********************************************
+
+    funcs.c:
+    Contains definition for the API functions.
+
+**********************************************/
+
 #include<stdio.h>
 
 #include "lua.h"
@@ -20,12 +27,15 @@ bool cdf_internal_isShaderLoaded() {
 }
 
 Shader* cdf_internal_getCurrentShader() {
+
     return currentShader;
+
 }
 
 // lua functions
 
 void cdf_openLib(lua_State* L) {
+
     lua_pushcfunction(L, cdf_window_Init);
     lua_setglobal(L, "Init");
     lua_pushcfunction(L, cdf_window_SetFps);
@@ -65,6 +75,15 @@ void cdf_openLib(lua_State* L) {
     lua_setglobal(L, "LoadShader");
     lua_pushcfunction(L, cdf_shader_set);
     lua_setglobal(L, "SetShader");
+    lua_pushcfunction(L, cdf_shader_reset);
+    lua_setglobal(L, "ResetShader");
+
+    lua_pushcfunction(L, cdf_unload_sprite);
+    lua_setglobal(L, "UnloadSprite");
+    lua_pushcfunction(L, cdf_unload_sound);
+    lua_setglobal(L, "UnloadSound");
+    lua_pushcfunction(L, cdf_unload_shader);
+    lua_setglobal(L, "UnloadShader");
 
 }
 
@@ -263,5 +282,33 @@ int cdf_shader_set(lua_State* L) {
     currentShader = shader;
     isShaderLoaded = true;
     return 0;
+
+}
+
+int cdf_shader_reset(lua_State* L) {
+
+    isShaderLoaded = false;
+
+}
+
+
+int cdf_unload_sprite(lua_State* L) {
+
+    Texture2D* sprite = (Texture2D*) lua_touserdata(L, 1);
+    UnloadTexture(*sprite);
+
+}
+
+int cdf_unload_sound(lua_State* L) {
+
+    Sound* sound = (Sound*) lua_touserdata(L, 1);
+    UnloadSound(*sound);
+
+}
+
+int cdf_unload_shader(lua_State* L) {
+
+    Shader* shader = (Shader*) lua_touserdata(L, 1);
+    UnloadShader(*shader);
 
 }

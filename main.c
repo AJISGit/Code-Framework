@@ -1,3 +1,10 @@
+/*********************************************
+
+    main.c:
+    Handles stuff like the callback functions (onDraw or onUpdate).
+
+**********************************************/
+
 #include<stdio.h>
 #include<string.h>
 #include<time.h>
@@ -16,7 +23,7 @@
 int main(int argc, char* argv[]) {
 
     if (argc < 2) {
-        printf("\nCodeFramework: version beta 1.1, \"The Shader Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
+        printf("\nCodeFramework: version beta 1.2, \"The Unloading Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         printf("You must have forgotten to enter a file, please do that\n");
         printf("\nOr you could type \"codeframework --info\" for more info\n\n");
@@ -32,7 +39,7 @@ int main(int argc, char* argv[]) {
         \n\
         We, and by we I mean I, don't care about these major flaws. I think of them as features. \n\
         \n\
-        You want documentation? That's too bad! Writing documentation for a product only I will use sounds boring.\n\
+        You want documentation? I'm working on it! You can see the progress at https://github.com/AJISGit/Code-Framework/wiki.\n\
         \n\
         ";
         printf("%s\n", infoText);

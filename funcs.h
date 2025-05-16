@@ -1,3 +1,12 @@
+/*********************************************
+
+    funcs.h:
+    Contains declarations for the API functions.
+
+    All function names follow this format: "cdf_catagory_name"
+
+**********************************************/
+
 #pragma once
 
 #include "lua.h"
@@ -37,3 +46,8 @@ int cdf_sound_play(lua_State* L);
 
 int cdf_shader_load(lua_State* L);
 int cdf_shader_set(lua_State* L);
+int cdf_shader_reset(lua_State* L);
+
+int cdf_unload_sprite(lua_State* L);
+int cdf_unload_sound(lua_State* L);
+int cdf_unload_shader(lua_State* L);
