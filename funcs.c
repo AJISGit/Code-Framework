@@ -42,8 +42,6 @@ void cdf_openLib(lua_State* L) {
     lua_setglobal(L, "SetMaxFps");
     lua_pushcfunction(L, cdf_window_Close);
     lua_setglobal(L, "Close");
-    lua_pushcfunction(L, cdf_window_Wait);
-    lua_setglobal(L, "Wait");
 
     lua_pushcfunction(L, cdf_draw_setColor);
     lua_setglobal(L, "SetDrawColor");
@@ -85,6 +83,9 @@ void cdf_openLib(lua_State* L) {
     lua_pushcfunction(L, cdf_unload_shader);
     lua_setglobal(L, "UnloadShader");
 
+    lua_pushcfunction(L, cdf_misc_Wait);
+    lua_setglobal(L, "Wait");
+
 }
 
 int cdf_window_Init(lua_State* L) {
@@ -114,12 +115,6 @@ int cdf_window_Close(lua_State* L) {
     CloseWindow();
     return 0;
 }
-
-int cdf_window_Wait(lua_State* L) {
-    WaitTime(lua_tonumber(L, 1));
-    return 0;
-}
-
 
 
 int cdf_draw_setColor(lua_State* L) {
@@ -310,5 +305,13 @@ int cdf_unload_shader(lua_State* L) {
 
     Shader* shader = (Shader*) lua_touserdata(L, 1);
     UnloadShader(*shader);
+
+}
+
+
+int cdf_misc_Wait(lua_State* L) {
+
+    WaitTime(lua_tonumber(L, 1));
+    return 0;
 
 }

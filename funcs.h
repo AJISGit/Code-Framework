@@ -3,7 +3,8 @@
     funcs.h:
     Contains declarations for the API functions.
 
-    All function names follow this format: "cdf_catagory_name"
+    All function names follow this format: "cdf_catagory_name."
+    Or if they're internal functions (such as ones to detect shaders), then it goes "cdf_internal_name."
 
 **********************************************/
 
@@ -27,7 +28,6 @@ void cdf_openLib(lua_State* L);
 int cdf_window_Init(lua_State* L);
 int cdf_window_Close(lua_State* L);
 int cdf_window_SetFps(lua_State* L);
-int cdf_window_Wait(lua_State* L);
 
 int cdf_draw_setColor(lua_State* L);
 int cdf_draw_setBGColor(lua_State* L);
@@ -51,3 +51,5 @@ int cdf_shader_reset(lua_State* L);
 int cdf_unload_sprite(lua_State* L);
 int cdf_unload_sound(lua_State* L);
 int cdf_unload_shader(lua_State* L);
+
+int cdf_misc_Wait(lua_State* L);

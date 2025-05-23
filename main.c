@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     int isUpdate = lua_getglobal(L, "onUpdate");
 
     if (isUpdate) {
-        SetTargetFPS(30);
+        
         int startTime = GET_CURRENT_TIME;
         while (!WindowShouldClose()) {
 
@@ -106,12 +106,17 @@ int main(int argc, char* argv[]) {
     int isClose = lua_getglobal(L, "onClose");
     
     if (isClose) {
+
         int closeError = lua_pcall(L, 0, 0, 0);
         if (closeError) {
             fprintf(stderr, "%s\n", lua_tostring(L, -1));
             return 1;
         }
+
     }
 
     lua_close(L);
+
+    return 0;
+
 }
