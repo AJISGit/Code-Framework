@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 
 #include<raylib.h>
 
@@ -20,6 +20,8 @@
 
 bool cdf_internal_isShaderLoaded();
 Shader* cdf_internal_getCurrentShader();
+
+bool cdf_internal_isFontLoaded();
 
 // lua functions
 
@@ -48,8 +50,17 @@ int cdf_shader_load(lua_State* L);
 int cdf_shader_set(lua_State* L);
 int cdf_shader_reset(lua_State* L);
 
+
+int cdf_font_load(lua_State* L);
+int cdf_font_set(lua_State* L);
+int cdf_font_reset(lua_State* L);
+
+
 int cdf_unload_sprite(lua_State* L);
 int cdf_unload_sound(lua_State* L);
 int cdf_unload_shader(lua_State* L);
+int cdf_unload_shader(lua_State* L);
+int cdf_unload_font(lua_State* L);
+
 
 int cdf_misc_Wait(lua_State* L);

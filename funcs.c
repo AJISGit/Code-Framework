@@ -7,16 +7,18 @@
 
 #include<stdio.h>
 
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include <lua.h>
+#include <lauxlib.h>
+#include <lualib.h>
 
 #include "funcs.h"
 
 Color drawColor = WHITE;
 Color backgroundColor = BLACK;
 bool isShaderLoaded = false;
+bool isFontLoaded = false;
 Shader* currentShader;
+Font* currentFont;
 
 // internal functions
 
@@ -29,6 +31,12 @@ bool cdf_internal_isShaderLoaded() {
 Shader* cdf_internal_getCurrentShader() {
 
     return currentShader;
+
+}
+
+bool cdf_internal_isFontLoaded() {
+
+    return isFontLoaded;
 
 }
 
@@ -76,12 +84,21 @@ void cdf_openLib(lua_State* L) {
     lua_pushcfunction(L, cdf_shader_reset);
     lua_setglobal(L, "ResetShader");
 
+    lua_pushcfunction(L, cdf_font_load);
+    lua_setglobal(L, "LoadFont");
+    lua_pushcfunction(L, cdf_font_set);
+    lua_setglobal(L, "SetFont");
+    lua_pushcfunction(L, cdf_font_reset);
+    lua_setglobal(L, "ResetFont");
+
     lua_pushcfunction(L, cdf_unload_sprite);
     lua_setglobal(L, "UnloadSprite");
     lua_pushcfunction(L, cdf_unload_sound);
     lua_setglobal(L, "UnloadSound");
     lua_pushcfunction(L, cdf_unload_shader);
     lua_setglobal(L, "UnloadShader");
+    lua_pushcfunction(L, cdf_unload_font);
+    lua_setglobal(L, "UnloadFont");
 
     lua_pushcfunction(L, cdf_misc_Wait);
     lua_setglobal(L, "Wait");
@@ -171,11 +188,24 @@ int cdf_draw_sprite(lua_State* L) {
 
 int cdf_draw_text(lua_State* L) {
     const char* text = lua_tostring(L, 1);
-    int posX = (int) lua_tointeger(L, 2);
-    int posY = (int) lua_tointeger(L, 3);
-    int size = (int) lua_tointeger(L, 4);
+    float posX = (float) lua_tonumber(L, 2);
+    float posY = (float) lua_tonumber(L, 3);
+    float size = (float) lua_tonumber(L, 4);
 
-    DrawText(text, posX, posY, size, drawColor);
+    int defaultFontSize = 10;
+    int spacing = size / defaultFontSize;
+
+    Vector2 textPos = (Vector2) {posX, posY};
+
+    if (cdf_internal_isFontLoaded()) {
+
+        DrawTextEx(*currentFont, text, textPos, size, (float) spacing, drawColor);
+
+    } else {
+
+        DrawTextEx(GetFontDefault(), text, textPos, size, (float) spacing, drawColor);
+
+    }
 
     return 0;
 
@@ -283,6 +313,46 @@ int cdf_shader_set(lua_State* L) {
 int cdf_shader_reset(lua_State* L) {
 
     isShaderLoaded = false;
+    return 0;
+
+}
+
+
+int cdf_font_load(lua_State* L) {
+
+    cdf_font_reset(L);
+
+    const char* filename = lua_tostring(L, 1);
+    Font newFont = LoadFont(filename);
+
+    Font* pFont = (Font*) lua_newuserdata(L, sizeof(newFont));
+
+    pFont->baseSize = newFont.baseSize;
+    pFont->glyphCount = newFont.glyphCount;
+    pFont->glyphPadding = newFont.glyphPadding;
+    pFont->glyphs = newFont.glyphs;
+    pFont->recs = newFont.recs;
+    pFont->texture = newFont.texture;
+
+    return 1;
+
+}
+
+int cdf_font_set(lua_State* L) {
+
+    Font* font = (Font*) lua_touserdata(L, 1);
+    currentFont = font;
+
+    isFontLoaded = true;
+
+    return 0;
+
+}
+
+int cdf_font_reset(lua_State* L) {
+
+    isFontLoaded = false;
+    return 0;
 
 }
 
@@ -291,6 +361,7 @@ int cdf_unload_sprite(lua_State* L) {
 
     Texture2D* sprite = (Texture2D*) lua_touserdata(L, 1);
     UnloadTexture(*sprite);
+    return 0;
 
 }
 
@@ -298,6 +369,7 @@ int cdf_unload_sound(lua_State* L) {
 
     Sound* sound = (Sound*) lua_touserdata(L, 1);
     UnloadSound(*sound);
+    return 0;
 
 }
 
@@ -305,6 +377,14 @@ int cdf_unload_shader(lua_State* L) {
 
     Shader* shader = (Shader*) lua_touserdata(L, 1);
     UnloadShader(*shader);
+    return 0;
+
+}
+
+int cdf_unload_font(lua_State* L) {
+
+    isFontLoaded = false;
+    return 0;
 
 }
 

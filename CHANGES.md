@@ -22,3 +22,16 @@ Memory leaks... they're not fun.
 - Added the `UnloadSound` function.
 - Added the `UnloadSprite` function.
 - Added the `UnloadShader` function.
+
+## Version Beta 1.3: The Font Update!
+
+I noticed that currently you can only use the raylib font. Some like it, but others would like more.
+
+I've also thought, "Love 2D has that no game screen, why can't I?", so I added one.
+
+### Main Features
+- Added the `LoadFont` function.
+- Added the `SetFont` function.
+- Added the `ResetFont` function.
+## Other Features
+- Added the "No File" screen.

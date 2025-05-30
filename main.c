@@ -9,9 +9,9 @@
 #include<string.h>
 #include<time.h>
 
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
+#include<lua.h>
+#include<lauxlib.h>
+#include<lualib.h>
 
 #include "funcs.h"
 
@@ -22,15 +22,16 @@
 
 int main(int argc, char* argv[]) {
 
+    const char* NO_FILE_FILENAME = "scripts/nofile.lua";
+
     if (argc < 2) {
         printf("\nCodeFramework: version beta 1.2, \"The Unloading Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         printf("You must have forgotten to enter a file, please do that\n");
         printf("\nOr you could type \"codeframework --info\" for more info\n\n");
-        return 0;
     }
 
-    if (strcmp(argv[1], "--info") == 0) {
+    if ((argc >= 2) && (strcmp(argv[1], "--info") == 0)) {
         const char* infoText = "\n\
         Codeframework:\n\
         The new Lua framework in town.\n\
@@ -49,8 +50,19 @@ int main(int argc, char* argv[]) {
     lua_State* L = luaL_newstate();
     luaL_openlibs(L);
     cdf_openLib(L);
+
+    int error;
+
+    if (argc < 2) {
+
+        error = luaL_dofile(L, NO_FILE_FILENAME);
+
+    } else {
+
+        error = luaL_dofile(L, argv[1]);
+
+    }
     
-    int error = luaL_dofile(L, argv[1]);
     if (error) {
         fprintf(stderr, "%s\n", lua_tostring(L, -1));
         lua_close(L);

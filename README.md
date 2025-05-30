@@ -42,3 +42,6 @@ We, and by we I mean I, don't care about these major flaws. I think of them as f
 
 You want documentation? I'm working on it! You can see the progress at https://github.com/AJISGit/Code-Framework/wiki.
 ```
+## Compiling From Source
+
+There is a `build.bat` file for building with mingw -w64 on windows. It's assumed that `lua.h`, `lauxlib.h`, and `lualib.h` are all in your include path.

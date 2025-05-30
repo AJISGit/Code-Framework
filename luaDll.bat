@@ -1,1 +1,0 @@
-gcc -shared lzio.c lvm.c lutf8lib.c lundump.c lua.c ltm.c ltablib.c ltable.c lstrlib.c lstring.c lstate.c lparser.c loslib.c lopcodes.c lobject.c loadlib.c lmem.c lmathlib.c llex.c liolib.c linit.c lgc.c lfunc.c ldump.c ldo.c ldebug.c ldblib.c lctype.c lcorolib.c lcode.c lbaselib.c lauxlib.c lapi.c -o lua.dll
