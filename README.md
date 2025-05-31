@@ -45,3 +45,5 @@ You want documentation? I'm working on it! You can see the progress at https://g
 ## Compiling From Source
 
 There is a `build.bat` file for building with mingw -w64 on windows. It's assumed that `lua.h`, `lauxlib.h`, and `lualib.h` are all in your include path.
+
+It also assumes that you link the lua library with it (eg. `liblua.a`).
