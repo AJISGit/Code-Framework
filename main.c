@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     const char* NO_FILE_FILENAME = "scripts/nofile.lua";
 
     if (argc < 2) {
-        printf("\nCodeFramework: version beta 1.4, \"The Input Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
+        printf("\nCodeFramework: version beta 1.4, \"The Input Update!\"\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         printf("You must have forgotten to enter a file, please do that\n");
         printf("\nOr you could type \"codeframework --info\" for more info\n\n");
