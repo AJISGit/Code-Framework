@@ -1,1 +1,0 @@
-gcc funcs.c main.c -o codeframework.exe -Wno-missing-braces -static -I ./include/ -L ./lib/ -lraylib -llua -lopengl32 -lgdi32 -lwinmm
