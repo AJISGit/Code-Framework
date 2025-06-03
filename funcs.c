@@ -6,6 +6,7 @@
 **********************************************/
 
 #include<stdio.h>
+#include<string.h>
 
 #include <lua.h>
 #include <lauxlib.h>
@@ -68,6 +69,12 @@ void cdf_openLib(lua_State* L) {
 
     lua_pushcfunction(L, cdf_input_isKeyDown);
     lua_setglobal(L, "IsKeyDown");
+    lua_pushcfunction(L, cdf_input_getMousePosition);
+    lua_setglobal(L, "GetMousePosition");
+    lua_pushcfunction(L, cdf_input_isMouseButtonDown);
+    lua_setglobal(L, "IsMouseButtonDown");
+    lua_pushcfunction(L, cdf_input_isMouseButtonPressed);
+    lua_setglobal(L, "IsMouseButtonPressed");
 
     lua_pushcfunction(L, cdf_load_sprite);
     lua_setglobal(L, "LoadSprite");
@@ -213,39 +220,119 @@ int cdf_draw_text(lua_State* L) {
 
 
 int cdf_input_isKeyDown(lua_State* L) {
-    const char *key = luaL_checkstring(L, 1);
+    const char *key = lua_tostring(L, 1);
     
-    if (key[0] == 'w') {
+    if (strcmp(key, "w") == 0) {
         if (IsKeyDown(KEY_W)) {
             lua_pushboolean(L, 1);
         } else {
             lua_pushboolean(L, 0);
         }
-    } else if (key[0] == 'a') {
+    } else if (strcmp(key, "a") == 0) {
         if (IsKeyDown(KEY_A)) {
             lua_pushboolean(L, 1);
         } else {
             lua_pushboolean(L, 0);
         }
-    } else if (key[0] == 's') {
+    } else if (strcmp(key, "s") == 0) {
         if (IsKeyDown(KEY_S)) {
             lua_pushboolean(L, 1);
         } else {
             lua_pushboolean(L, 0);
         }
-    } else if (key[0] == 'd') {
+    } else if (strcmp(key, "d") == 0) {
         if (IsKeyDown(KEY_D)) {
             lua_pushboolean(L, 1);
         } else {
             lua_pushboolean(L, 0);
         }
-    }  else {
+    } else if (strcmp(key, "space") == 0) {
+
+        if (IsKeyDown(KEY_SPACE)) {
+            lua_pushboolean(L, 1);
+        } else {
+            lua_pushboolean(L, 0);
+        }
+
+    } else if (strcmp(key, "enter") == 0) {
+
+        if (IsKeyDown(KEY_ENTER)) {
+            lua_pushboolean(L, 1);
+        } else {
+            lua_pushboolean(L, 0);
+        }
+
+    } else {
         fprintf(stderr, "Invalid Key\n");
         lua_pushboolean(L, 0);
     }
 
     return 1;
 }
+
+int cdf_input_getMousePosition(lua_State* L) {
+
+    Vector2 mousePos = GetMousePosition();
+
+    lua_pushnumber(L, mousePos.x);
+    lua_pushnumber(L, mousePos.y);
+
+    return 2;
+
+}
+
+int cdf_input_isMouseButtonDown(lua_State* L) {
+
+    const char* button = lua_tostring(L, 1);
+    int buttonNumber;
+
+    if (strcmp(button, "left") == 0) {
+
+        buttonNumber = MOUSE_BUTTON_LEFT;
+
+    } else if (strcmp(button, "right") == 0) {
+
+        buttonNumber = MOUSE_BUTTON_RIGHT;
+
+    } else {
+
+        luaL_error(L, "Mouse button \"%s\" is not a valid mouse button.", button);
+        return 0;
+
+    }
+
+    lua_pushboolean(L, (int) IsMouseButtonDown(buttonNumber));
+
+    return 1;
+
+}
+
+int cdf_input_isMouseButtonPressed(lua_State* L) {
+
+    const char* button = lua_tostring(L, 1);
+    int buttonNumber;
+
+    if (strcmp(button, "left") == 0) {
+
+        buttonNumber = MOUSE_BUTTON_LEFT;
+
+    } else if (strcmp(button, "right") == 0) {
+
+        buttonNumber = MOUSE_BUTTON_RIGHT;
+
+    } else {
+
+        luaL_error(L, "Mouse button \"%s\" is not a valid mouse button.", button);
+        return 0;
+
+    }
+
+    lua_pushboolean(L, (int) IsMouseButtonPressed(buttonNumber));
+
+    return 1;
+
+}
+
 
 int cdf_load_sprite(lua_State* L) {
 

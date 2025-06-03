@@ -1,7 +1,7 @@
 /*********************************************
 
     main.c:
-    Handles stuff like the callback functions (onDraw or onUpdate).
+    Handles stuff like startup or the callback functions (onDraw or onUpdate).
 
 **********************************************/
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     const char* NO_FILE_FILENAME = "scripts/nofile.lua";
 
     if (argc < 2) {
-        printf("\nCodeFramework: version beta 1.2, \"The Unloading Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
+        printf("\nCodeFramework: version beta 1.4, \"The Input Update!\"\nNo copyright at all!\nsome sort of license would go here.\nThis is a crappy lua framework made using raylib and C. Generic name on purpose\n");
         printf("\n---------------------------------\n");
         printf("You must have forgotten to enter a file, please do that\n");
         printf("\nOr you could type \"codeframework --info\" for more info\n\n");
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         const char* infoText = "\n\
         Codeframework:\n\
         The new Lua framework in town.\n\
-        You may know of it as, \"That framework that only supports four keys\",\n\
+        You may know of it as, \"That framework that only supports six keys\",\n\
         Or, \"That framework that doesn't test the metatables of userdata.\"\n\
         \n\
         We, and by we I mean I, don't care about these major flaws. I think of them as features. \n\

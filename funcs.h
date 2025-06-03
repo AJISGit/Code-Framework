@@ -40,6 +40,9 @@ int cdf_draw_sprite(lua_State* L);
 int cdf_draw_text(lua_State* L);
 
 int cdf_input_isKeyDown(lua_State* L);
+int cdf_input_getMousePosition(lua_State* L);
+int cdf_input_isMouseButtonDown(lua_State* L);
+int cdf_input_isMouseButtonPressed(lua_State* L);
 
 int cdf_load_sprite(lua_State* L);
 int cdf_load_sound(lua_State* L);

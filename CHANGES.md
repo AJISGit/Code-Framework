@@ -35,3 +35,18 @@ I've also thought, "Love 2D has that no game screen, why can't I?", so I added o
 - Added the `ResetFont` function.
 ## Other Features
 - Added the "No File" screen.
+
+## Version beta 1.4: The Input Update!
+
+Life (for non vim users) is dull and boring without the mouse.
+
+Life is also (for everyone, including vim users) dull and boring with just four keys, so here we are.
+
+I've added three new functions! All for mouse input. And while we're on the topic of input, why not add some keys?
+
+### Main Features
+- Added the `GetMousePosition` function.
+- Added the `IsMouseButtonDown` function.
+- Added the `IsMouseButtonPressed` function.
+- Added the enter key as an option for `IsKeyDown`.
+- Added the space key as an option for `IsKeyDown`.
